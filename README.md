@@ -1,6 +1,7 @@
 # AI Personal Finance Agent — EAGV3 Session 6
 
-> 🎥 **Video demo (all four queries, end to end): https://youtu.be/G9HRxP7ofvk
+> 🎥 **Video demo (all four queries, end to end): https://youtu.be/G9HRxP7ofvk**
+
 A four-layer agent (**Perception → Memory → Decision → Action**) that answers
 real personal-finance questions by reasoning step-by-step and calling tools. It
 is **not** a single-tool toy: each target query runs a multi-step
