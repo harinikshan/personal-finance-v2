@@ -1,0 +1,253 @@
+{
+  "$defs": {
+    "FinancialContext": {
+      "additionalProperties": false,
+      "description": "Everything we know (or have extracted) about the user's finances.\n\nEvery field is optional: perception fills what the message states, memory\npatches in durable facts from earlier runs, and `missing_information`\nelsewhere records what is still unknown.",
+      "properties": {
+        "age": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Age"
+        },
+        "monthly_income": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Monthly Income"
+        },
+        "monthly_expenses": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Monthly Expenses"
+        },
+        "existing_loans": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Existing Loans"
+        },
+        "savings": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Savings"
+        },
+        "investments": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Investments"
+        },
+        "emergency_fund": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Emergency Fund"
+        },
+        "risk_appetite": {
+          "anyOf": [
+            {
+              "enum": [
+                "conservative",
+                "moderate",
+                "aggressive"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Risk Appetite"
+        },
+        "dependents": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dependents"
+        },
+        "time_horizon_years": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time Horizon Years"
+        },
+        "country": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Country"
+        },
+        "tax_regime": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tax Regime"
+        },
+        "financial_goal": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Financial Goal"
+        },
+        "currency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Currency"
+        }
+      },
+      "title": "FinancialContext",
+      "type": "object"
+    },
+    "MemoryDirective": {
+      "additionalProperties": false,
+      "description": "A durable fact the user explicitly asked us to remember.",
+      "properties": {
+        "key": {
+          "description": "short snake_case identifier, e.g. risk_appetite",
+          "title": "Key",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "the fact to store; emit a string, but a bare number is accepted and coerced",
+          "title": "Value"
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ],
+      "title": "MemoryDirective",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Typed result of reading one user message.",
+  "properties": {
+    "request_types": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Request Types",
+      "type": "array"
+    },
+    "context": {
+      "$ref": "#/$defs/FinancialContext"
+    },
+    "missing_information": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Information",
+      "type": "array"
+    },
+    "facts_to_remember": {
+      "items": {
+        "$ref": "#/$defs/MemoryDirective"
+      },
+      "title": "Facts To Remember",
+      "type": "array"
+    },
+    "needs_recall": {
+      "default": false,
+      "description": "true if answering relies on facts the user gave in a prior run",
+      "title": "Needs Recall",
+      "type": "boolean"
+    }
+  },
+  "title": "PerceptionOutput",
+  "type": "object"
+}

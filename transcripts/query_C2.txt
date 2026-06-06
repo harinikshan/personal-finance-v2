@@ -1,0 +1,106 @@
+$ uv run python agent6.py --query C2
+
+==============================================================================
+QUERY  (run_id=C2)
+==============================================================================
+Based on what you already know about me, how much do I need to invest every month to reach my retirement goal, assuming my investments earn 12% per year? Show the required monthly SIP.
+
+==============================================================================
+PERCEPTION  (auto_route=perception, schema-validated)
+==============================================================================
+{
+  "request_types": [
+    "Retirement",
+    "Investing"
+  ],
+  "context": {
+    "age": null,
+    "monthly_income": null,
+    "monthly_expenses": null,
+    "existing_loans": null,
+    "savings": null,
+    "investments": null,
+    "emergency_fund": null,
+    "risk_appetite": null,
+    "dependents": null,
+    "time_horizon_years": null,
+    "country": null,
+    "tax_regime": null,
+    "financial_goal": "retirement",
+    "currency": null
+  },
+  "missing_information": [
+    "current age",
+    "retirement age",
+    "current savings",
+    "monthly expenses",
+    "desired retirement corpus",
+    "income"
+  ],
+  "facts_to_remember": [],
+  "needs_recall": true
+}
+
+==============================================================================
+MEMORY  (durable store under state/memory.json, auto_route=memory)
+==============================================================================
+Durable store now holds: ['risk_appetite', 'retirement_goal', 'retirement_age', 'current_age']
+Recalled for this query:
+  - retirement_goal
+  - retirement_age
+  - current_age
+  - risk_appetite
+
+==============================================================================
+TOOLS available from MCP server (stdio)
+==============================================================================
+web_search, fetch_url, get_time, currency_convert, finance_calc, read_file, list_dir, create_file, update_file, edit_file
+
+==============================================================================
+DECISION + ACTION loop  (decide auto_route=decision, dispatch via MCP)
+==============================================================================
+
+-- iteration 1 [None->nvidia:meta/llama-3.3-70b-instruct]
+   thought: Calculate required SIP
+   tool: finance_calc({"operation": "required_sip", "params": {"target": 50000000, "annual_rate_pct": 12, "years": 30}})
+         -> ok: {"operation": "required_sip", "inputs": {"target": 50000000, "annual_rate_pct": 12, "years": 30}, "required_monthly_sip": 14164.65, "target": 50000000, "months": 360, "formula": "P = FV / ((((1+r)^n - 1)/r) * (1+r))"}
+
+-- iteration 2 [None->nvidia:meta/llama-3.3-70b-instruct]
+   thought: Finalize
+   decision: finalize -> synthesize answer
+
+==============================================================================
+FINAL_RESPONSE  (iterations=2, tools=['finance_calc'])
+==============================================================================
+{
+  "numeric_answer": "Monthly SIP = INR 14,164.65",
+  "summary": "To reach your retirement goal of INR 50,000,000 in 30 years with an expected annual return of 12%, you need to invest INR 14,164.65 per month through a Systematic Investment Plan (SIP).",
+  "key_findings": [
+    "Target retirement corpus: INR 50,000,000",
+    "Investment horizon: 30 years (360 months)",
+    "Expected annual return: 12%",
+    "Required monthly SIP: INR 14,164.65"
+  ],
+  "risks": [
+    "Market volatility: The actual investment returns may differ from the assumed 12% annual return.",
+    "Inflation risk: The purchasing power of INR 50,000,000 in 30 years may be less than anticipated due to inflation.",
+    "Lapsation risk: Missing SIP payments can disrupt the compounding effect and delay goal achievement."
+  ],
+  "recommended_actions": [],
+  "priority_order": [],
+  "short_term_plan": [
+    "Set up an SIP of INR 14,164.65 per month.",
+    "Choose diversified mutual funds with a history of good performance, aligning with a 12% expected return.",
+    "Review your investment portfolio quarterly to ensure it remains on track."
+  ],
+  "long_term_plan": [],
+  "assumptions": [],
+  "follow_up_questions": [],
+  "reasoning_types": []
+}
+
+# NOTE: This is a SEPARATE process from C1. The user's question restates NO numbers.
+# needs_recall=true, and the Memory layer recalls retirement_goal / current_age /
+# retirement_age / risk_appetite from state/memory.json (written by the earlier C1
+# run) -> the 30-year horizon (60-30) and the Rs 5 crore target come purely from
+# durable memory. THIS IS THE CROSS-RUN MEMORY PROOF.

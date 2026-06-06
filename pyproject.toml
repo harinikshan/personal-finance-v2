@@ -1,0 +1,18 @@
+[project]
+name = "ai-personal-finance-agent"
+version = "0.1.0"
+description = "EAGV3 Session 6 — AI Personal Finance Agent (Perception/Memory/Decision/Action over LLM Gateway V3 + MCP)"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "pydantic>=2.7",
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+    "mcp>=1.2.0",
+    "ddgs>=6.0",
+    "tavily-python>=0.5",
+    "crawl4ai>=0.4.0",
+]
+
+[tool.uv]
+package = false

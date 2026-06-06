@@ -1,0 +1,84 @@
+{
+  "additionalProperties": false,
+  "description": "The structured FINAL_RESPONSE the agent returns to the user.",
+  "properties": {
+    "numeric_answer": {
+      "description": "the single headline figure/answer, e.g. 'EMI = Rs 17,995/month'",
+      "title": "Numeric Answer",
+      "type": "string"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "key_findings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Findings",
+      "type": "array"
+    },
+    "risks": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Risks",
+      "type": "array"
+    },
+    "recommended_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Recommended Actions",
+      "type": "array"
+    },
+    "priority_order": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Priority Order",
+      "type": "array"
+    },
+    "short_term_plan": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Short Term Plan",
+      "type": "array"
+    },
+    "long_term_plan": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Long Term Plan",
+      "type": "array"
+    },
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "follow_up_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Follow Up Questions",
+      "type": "array"
+    },
+    "reasoning_types": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasoning Types",
+      "type": "array"
+    }
+  },
+  "required": [
+    "numeric_answer",
+    "summary"
+  ],
+  "title": "FinalResponse",
+  "type": "object"
+}

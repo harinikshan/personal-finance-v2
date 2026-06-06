@@ -1,0 +1,44 @@
+{
+  "additionalProperties": false,
+  "description": "One turn of the decide->act loop, emitted as schema-validated structured\noutput by the decision-tier worker (no native tool-use, no regex).\n\naction == \"call_tool\":  execute `tool_name` with `tool_args` via MCP.\naction == \"finalize\":   stop the loop and synthesize the FINAL_RESPONSE.",
+  "properties": {
+    "thought": {
+      "description": "ONE short sentence (max 20 words) \u2014 why this step",
+      "title": "Thought",
+      "type": "string"
+    },
+    "action": {
+      "enum": [
+        "call_tool",
+        "finalize"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "tool_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "MCP tool to call when action == call_tool",
+      "title": "Tool Name"
+    },
+    "tool_args": {
+      "additionalProperties": true,
+      "description": "arguments for the tool",
+      "title": "Tool Args",
+      "type": "object"
+    }
+  },
+  "required": [
+    "thought",
+    "action"
+  ],
+  "title": "NextAction",
+  "type": "object"
+}
